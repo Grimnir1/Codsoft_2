@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 340px;
+        }
+
+        .display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 24px;
+            height: 70px;
+            overflow: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .number {
+            background: #fff;
+            border: 1px solid #dee2e6;
+        }
+
+        .operator {
+            background: #e9ecef;
+        }
+
+        .function {
+            background: #dee2e6;
+        }
+
+        .equals {
+            background: #007bff;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .equals:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="function" onclick="clearDisplay()">C</button>
+            <button class="function" onclick="operation('sin')">sin</button>
+            <button class="function" onclick="operation('cos')">cos</button>
+            <button class="function" onclick="operation('tan')">tan</button>
+            <button class="function" onclick="operation('sqrt')">√</button>
+            
+            <button class="number" onclick="appendNumber('7')">7</button>
+            <button class="number" onclick="appendNumber('8')">8</button>
+            <button class="number" onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('/')">/</button>
+            <button class="function" onclick="operation('log')">log</button>
+            
+            <button class="number" onclick="appendNumber('4')">4</button>
+            <button class="number" onclick="appendNumber('5')">5</button>
+            <button class="number" onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('*')">×</button>
+            <button class="function" onclick="operation('ln')">ln</button>
+            
+            <button class="number" onclick="appendNumber('1')">1</button>
+            <button class="number" onclick="appendNumber('2')">2</button>
+            <button class="number" onclick="appendNumber('3')">3</button>
+            <button class="operator" onclick="appendOperator('-')">-</button>
+            <button class="function" onclick="operation('exp')">exp</button>
+            
+            <button class="number" onclick="appendNumber('0')">0</button>
+            <button class="number" onclick="appendNumber('.')">.</button>
+            <button class="function" onclick="operation('pi')">π</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let currentOperation = null;
+        const display = document.getElementById('display');
+
+        function updateDisplay() {
+            display.textContent = currentInput || '0';
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            currentOperation = null;
+            updateDisplay();
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' && number !== '.') {
+                currentInput = '';
+            }
+            currentInput += number;
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            if (currentInput !== '') {
+                currentInput += operator;
+                updateDisplay();
+            }
+        }
+
+        function operation(type) {
+            switch(type) {
+                case 'sin':
+                    currentInput = Math.sin(eval(currentInput) * Math.PI / 180).toString();
+                    break;
+                case 'cos':
+                    currentInput = Math.cos(eval(currentInput) * Math.PI / 180).toString();
+                    break;
+                case 'tan':
+                    currentInput = Math.tan(eval(currentInput) * Math.PI / 180).toString();
+                    break;
+                case 'sqrt':
+                    currentInput = Math.sqrt(eval(currentInput)).toString();
+                    break;
+                case 'log':
+                    currentInput = Math.log10(eval(currentInput)).toString();
+                    break;
+                case 'ln':
+                    currentInput = Math.log(eval(currentInput)).toString();
+                    break;
+                case 'exp':
+                    currentInput = Math.exp(eval(currentInput)).toString();
+                    break;
+                case 'pi':
+                    currentInput = Math.PI.toString();
+                    break;
+                case 'sqr':
+                    currentInput = Math.PI.toString();
+                    break;
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                currentInput = eval(currentInput).toString();
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
